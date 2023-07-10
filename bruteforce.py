@@ -14,20 +14,23 @@ def get_data(path):
             share_list.append(row)
     return share_list
 
-def invest_limit():
-    pass
+def invest_limit(path):
+    price = (get_data(path))[1]
+    benefit = (get_data(path))[2]
+ 
+
 
 def get_best_combination(path):
     shares_list = get_data(path)
     profit = 0
     best_combination = []
-    for i in range(len(shares_list) + 1):
-        combination += list(combinations(shares_list, i))
-        
-        
-        
-        
-    print(combination)
+    cost = []
+    for i in range(3):
+        combination = list(combinations(shares_list, i))
+        for e in combination[1]:
+            cost.append(e)
+       
+    print(cost)
 
     
-get_best_combination("data/dataset1_Python+P7.csv")   
+get_best_combination("data/dataset0_Python+P7.csv")   
