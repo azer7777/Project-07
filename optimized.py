@@ -24,10 +24,10 @@ def get_best_combination(path):
     max_spend = MAX_SPEND
     for i in all_shares:
         share_name = i[0]
-        share_price = i[1]  
+        share_price = abs(i[1])  
         share_profit = i[2]
         profit_by_share = (share_price * share_profit) / 100        
-        if (max_spend - share_price) >= 0:
+        if (max_spend - share_price) >= 0 and share_price != 0:
             best_combination.append(share_name)
             share_price_list.append(share_price)
             share_profit_list.append(profit_by_share)
