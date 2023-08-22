@@ -18,18 +18,16 @@ def get_data(path):
 def get_best_combination(path):
     all_shares = get_data(path)
     final_profit = 0
-    all_combination = []    
+    all_combinations = []    
     best_combination = ""
     for i in range(len(all_shares)):
-        all_combination += list(combinations(all_shares, i + 1))
-        for one_combination in all_combination:
+        all_combinations += list(combinations(all_shares, i + 1))
+        for one_combination in all_combinations:
             share_name_list = []
             share_price_list = []
             share_profit_list = []            
             for i in one_combination:
-                share_name = i[0]
-                share_price = i[1]  
-                share_gain = i[2]
+                share_name, share_price, share_gain = i[0], i[1], i[2]
                 profit_by_share = (share_price * share_gain) / 100            
                 share_price_list.append(share_price)
                 share_profit_list.append(profit_by_share)

@@ -14,30 +14,36 @@ def get_data(path):
             all_shares.append((row[0], float(row[1]), float(row[2])))
     return all_shares
 
- 
+
 def get_best_combination(path):
     all_shares = get_data(path)
-    all_shares.sort(key=lambda x: x[2], reverse=True)
+    n = len(all_shares)   
+    dp = [[0] * (MAX_SPEND + 1) for _ in range(n + 1)]    
+    for i in range(1, n + 1):
+        share_name, share_price, share_profit = all_shares[i - 1]
+        share_price = abs(share_price)
+        
+        for budget in range(MAX_SPEND + 1):
+            if share_price != 0 and budget >= share_price:
+                dp[i][budget] = max(dp[i - 1][budget],
+                                    dp[i - 1][budget - int(share_price)] + (share_price * share_profit) / 100)
+            else:
+                dp[i][budget] = dp[i - 1][budget]    
     best_combination = []
-    share_price_list = []
-    share_profit_list = []
-    max_spend = MAX_SPEND
-    for i in all_shares:
-        share_name = i[0]
-        share_price = abs(i[1])  
-        share_profit = i[2]
-        profit_by_share = (share_price * share_profit) / 100        
-        if (max_spend - share_price) >= 0 and share_price != 0:
+    budget = MAX_SPEND
+    for i in range(n, 0, -1):
+        if dp[i][budget] != dp[i - 1][budget]:
+            share_name, share_price, _ = all_shares[i - 1]
             best_combination.append(share_name)
-            share_price_list.append(share_price)
-            share_profit_list.append(profit_by_share)
-            max_spend -= share_price
-    investement = sum(share_price_list)
-    final_profit = sum(share_profit_list)
+            budget -= int(share_price)    
+    investement = MAX_SPEND - budget
+    final_profit = dp[n][MAX_SPEND]   
     print("Best combination : ", best_combination)
-    print("Investement : ", round(investement, 2), "$")
+    print("Investment : ", round(investement, 2), "$")
     print("Profit : ", round(final_profit, 2), "$")
-    return
 
     
 get_best_combination("data/dataset1_Python+P7.csv")
+
+
+
